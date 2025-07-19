@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-01-29 15:06:33.963994",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "allowed_amount_with_tax",
+  "consumed_amount_with_tax",
+  "remaining_amount_with_tax",
+  "is_shared_with_user"
+ ],
+ "fields": [
+  {
+   "columns": 3,
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User"
+  },
+  {
+   "columns": 2,
+   "fieldname": "allowed_amount_with_tax",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Allowed Amount"
+  },
+  {
+   "columns": 1,
+   "default": "0",
+   "fieldname": "is_shared_with_user",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Shared With User?",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "consumed_amount_with_tax",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Consumed Amount"
+  },
+  {
+   "columns": 2,
+   "fieldname": "remaining_amount_with_tax",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Remaining Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-02-13 08:00:02.829262",
+ "modified_by": "Administrator",
+ "module": "Petty Cash",
+ "name": "PC Clearance Per User Amount Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
