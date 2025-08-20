@@ -252,8 +252,7 @@ class PCClearance(Document):
 					cost_center=clearance_item.cost_center
 					
 					# Prepare user remark for account entries
-					if clearance_item.custom_notes:
-						account_user_remark = f" {clearance_item.custom_notes} "
+					account_user_remark = (clearance_item.custom_notes or "")
 					
 					
 					accounts.append({
@@ -299,8 +298,7 @@ class PCClearance(Document):
 					cost_center=clearance_item.cost_center
 					
 					# Prepare user remark for account entries
-					if clearance_item.custom_notes:
-						account_user_remark = f" {clearance_item.custom_notes} "
+					account_user_remark = (clearance_item.custom_notes or "")
 					
 					accounts.append({
 						"account": debit_account,
@@ -624,8 +622,7 @@ class PCClearance(Document):
 				bill_no=clearance_item.bill_no
 				cost_center=clearance_item.cost_center
 				# Prepare user remark for account entries
-				if clearance_item.custom_notes:
-					account_user_remark = f" {clearance_item.custom_notes}"
+				account_user_remark = (clearance_item.custom_notes or "")
 				
 				accounts.append({
 					"account": default_employee_loan_account,
