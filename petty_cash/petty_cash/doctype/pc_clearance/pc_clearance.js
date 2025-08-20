@@ -3,11 +3,49 @@
 
 frappe.ui.form.on('PC Clearance', {
 	refresh: function(frm) {
-		hide_all_fields_rows_for_non_creator(frm)
+		// hide_all_fields_rows_for_non_creator(frm)
+		// Calculate and display total in clearance details table
+		frm.fields_dict.clearance_details.grid.update_footer(function(row, row_count) {
+			if (row_count > 0) {
+				let total_amount = 0;
+				let total_amount_with_tax = 0;
+				
+				// Calculate totals
+				frm.doc.clearance_details.forEach(detail => {
+					if (detail.amount) {
+						total_amount += parseFloat(detail.amount);
+					}
+					if (detail.amount_with_tax) {
+						total_amount_with_tax += parseFloat(detail.amount_with_tax);
+					}
+				});
+
+				// Add total row
+				row.amount = total_amount.toFixed(2);
+				row.amount_with_tax = total_amount_with_tax.toFixed(2);
+				row.expense_type = 'Total';
+				row.is_non_stock_expense_type = 0;
+				row.expense_date = '';
+				row.is_tax_applicable = 0;
+				row.is_personal_loan = 0;
+				row.supplier = '';
+				row.project = '';
+				row.cost_center = '';
+				row.attachment = '';
+				row.bill_no = '';
+				row.pi_jv_reference = '';
+				row.created_by_user = '';
+				
+				// Style the total row
+				return {
+					style: 'background-color: #f8f9fa; font-weight: bold;'
+				};
+			}
+		});
 	},	
-	onload_post_render: function(frm) {
-		hide_all_fields_rows_for_non_creator(frm)
-	}
+	// onload_post_render: function(frm) {
+	// 	hide_all_fields_rows_for_non_creator(frm)
+	// }
 });
 
 

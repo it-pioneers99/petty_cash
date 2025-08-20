@@ -25,6 +25,7 @@
   "column_break_26kba",
   "bill_no",
   "pi_jv_reference",
+  "custom_notes",
   "created_by_user",
   "section_break_nrqj4",
   "add_item"
@@ -180,12 +181,21 @@
    "fieldname": "is_personal_loan",
    "fieldtype": "Check",
    "label": "Is Personal Loan"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "custom_notes",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "\u0645\u0644\u0627\u062d\u0638\u0627\u062a"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-18 07:17:23.804288",
+ "modified": "2025-08-07 13:29:48.652042",
  "modified_by": "Administrator",
  "module": "Petty Cash",
  "name": "PC Clearance Detail",

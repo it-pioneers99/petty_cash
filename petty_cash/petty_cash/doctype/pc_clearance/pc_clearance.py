@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import _
+from frappe import _, msgprint
 from frappe.model.document import Document
 from erpnext.controllers.accounts_controller import get_default_taxes_and_charges,get_taxes_and_charges
 from frappe.utils import flt,nowdate,cint,cstr,get_link_to_form,add_days
@@ -133,8 +133,6 @@ class PCClearance(Document):
 			if allowed_percent_of_total_clearance>0 and expense_type_to_check_actual_per>allowed_percent_of_total_clearance:
 				frappe.throw(_("For expense type {0}, allowed percentage of total without tax is {1} % whereas actual is {2} %.".format(clearance_item.expense_type,frappe.bold(allowed_percent_of_total_clearance),frappe.bold(expense_type_to_check_actual_per))))		
 
-
-
 	def synch_clearance_details_and_stock_item_details(self):	
 		#  check if is_non_stock_expense_type==1 , then remove
 		for clearance_item in self.clearance_details:
@@ -253,15 +251,22 @@ class PCClearance(Document):
 					bill_no=clearance_item.bill_no
 					cost_center=clearance_item.cost_center
 					
+					# Prepare user remark for account entries
+					account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
+					if clearance_item.custom_notes:
+						account_user_remark += f" - {clearance_item.custom_notes}"
+					
 					accounts.append({
 						"account": debit_account_1,
 						"debit_in_account_currency": debit_amount_1,
-						"cost_center": cost_center
+						"cost_center": cost_center,
+						"user_remark": account_user_remark
 					})
 					accounts.append({
 						"account": debit_account_2,
 						"debit_in_account_currency": debit_amount_2,
-						"cost_center": cost_center
+						"cost_center": cost_center,
+						"user_remark": account_user_remark
 					})              
 					# credit entry
 					accounts.append({
@@ -269,7 +274,8 @@ class PCClearance(Document):
 						"credit_in_account_currency": expense_amount,
 						"cost_center":  cost_center,
 						"party_type":"Employee",
-						"party":self.employee
+						"party":self.employee,
+						"user_remark": account_user_remark
 					})
 					expense_type_msg.append(expense_type)
 					clearance_detail_row_idx_msg.append(clearance_detail_row_idx)
@@ -291,10 +297,17 @@ class PCClearance(Document):
 					expense_amount=flt(clearance_item.amount_with_tax,2)   
 					bill_no=clearance_item.bill_no
 					cost_center=clearance_item.cost_center
+					
+					# Prepare user remark for account entries
+					account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
+					if clearance_item.custom_notes:
+						account_user_remark += f" - {clearance_item.custom_notes}"
+					
 					accounts.append({
 						"account": debit_account,
 						"debit_in_account_currency": expense_amount,
-						"cost_center": cost_center
+						"cost_center": cost_center,
+						"user_remark": account_user_remark
 					})
 					# credit entry
 					accounts.append({
@@ -302,7 +315,8 @@ class PCClearance(Document):
 						"credit_in_account_currency": expense_amount,
 						"cost_center":  cost_center,
 						"party_type":"Employee",
-						"party":self.employee
+						"party":self.employee,
+						"user_remark": account_user_remark
 					})
 					expense_type_msg.append(expense_type)
 					clearance_detail_row_idx_msg.append(clearance_detail_row_idx)
@@ -571,7 +585,7 @@ class PCClearance(Document):
 		
 		if len(accounts)>0:
 			print('clearance_detail_row_idx',clearance_detail_row_idx)
-			user_remark="It is a consolidated JE auto created on submit of PC Clearance {0}, Row # {1}".format(self.name,",".join(clearance_detail_row_idx))
+			user_remark=" It is a consolidated JE auto created on submit of PC Clearance {0}, Row # {1}".format(self.name,",".join(clearance_detail_row_idx))
 			
 			journal_entry = frappe.new_doc('Journal Entry')
 			journal_entry.voucher_type = 'Journal Entry'
