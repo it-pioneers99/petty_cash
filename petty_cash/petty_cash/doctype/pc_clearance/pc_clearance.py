@@ -563,6 +563,10 @@ class PCClearance(Document):
 					# debit entry
 					print('clearance_item',clearance_item.name,clearance_item.idx,' clearance_item.amount_with_tax' ,clearance_item.amount_with_tax)
 					print("party",clearance_item.supplier,"party",self.employee,"daccount",debit_account,"caccount", credit_account)
+					# Prepare user remark for account entries
+					account_user_remark = f"PC Clearance {self.name}, Row {clearance_item.idx}, {clearance_item.expense_type}"
+					if clearance_item.custom_notes:
+						account_user_remark += f" - {clearance_item.custom_notes}"
 					accounts.append({
 						"account": debit_account,
 						"debit_in_account_currency": clearance_item.amount_with_tax,
@@ -570,7 +574,8 @@ class PCClearance(Document):
 						"party_type":"Supplier",
 						"party":clearance_item.supplier,	
 						"reference_type":"Purchase Invoice",
-						"reference_name":clearance_item.pi_jv_reference								
+						"reference_name":clearance_item.pi_jv_reference,
+						"user_remark": account_user_remark								
 					})
 					# credit entry
 					accounts.append({
@@ -580,7 +585,8 @@ class PCClearance(Document):
 						"party_type":"Employee",
 						"party":self.employee,
 						# "reference_type":"Purchase Invoice",
-						# "reference_name":clearance_item.pi_jv_reference
+						# "reference_name":clearance_item.pi_jv_reference,
+						"user_remark": account_user_remark
 					})
 		
 		if len(accounts)>0:
@@ -616,24 +622,30 @@ class PCClearance(Document):
 				debit_amount=flt(clearance_item.amount_with_tax,2)
 
 				credit_account=default_petty_cash_account
-				expense_amount=flt(clearance_item.amount_with_tax,2)   
+				expense_amount=flt(clearance_item.amount_with_tax,2)	   
 				bill_no=clearance_item.bill_no
 				cost_center=clearance_item.cost_center
+				# Prepare user remark for account entries
+				account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {clearance_item.expense_type}"
+				if clearance_item.custom_notes:
+					account_user_remark += f" - {clearance_item.custom_notes}"
 				
 				accounts.append({
 					"account": default_employee_loan_account,
 					"debit_in_account_currency": debit_amount,
 					"cost_center": cost_center,
 					"party_type":"Employee",
-					"party":self.employee
+					"party":self.employee,
+					"user_remark": account_user_remark
 				})          
 				# credit entry
 				accounts.append({
 					"account": credit_account,
 					"credit_in_account_currency": expense_amount,
-					"cost_center":  cost_center,
+					"cost_center":	 cost_center,
 					"party_type":"Employee",
-					"party":self.employee
+					"party":self.employee,
+					"user_remark": account_user_remark
 				})
 				clearance_detail_row_idx_msg.append(clearance_detail_row_idx)
 
