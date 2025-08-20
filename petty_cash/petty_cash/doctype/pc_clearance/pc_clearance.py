@@ -252,9 +252,11 @@ class PCClearance(Document):
 					cost_center=clearance_item.cost_center
 					
 					# Prepare user remark for account entries
-					account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
 					if clearance_item.custom_notes:
-						account_user_remark += f" - {clearance_item.custom_notes}"
+						account_user_remark = f" {clearance_item.custom_notes} - PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type} "
+					else:
+						account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
+					
 					
 					accounts.append({
 						"account": debit_account_1,
@@ -299,9 +301,10 @@ class PCClearance(Document):
 					cost_center=clearance_item.cost_center
 					
 					# Prepare user remark for account entries
-					account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
 					if clearance_item.custom_notes:
-						account_user_remark += f" - {clearance_item.custom_notes}"
+						account_user_remark = f" {clearance_item.custom_notes} - PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type} "
+					else:
+						account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {expense_type}"
 					
 					accounts.append({
 						"account": debit_account,
@@ -564,9 +567,10 @@ class PCClearance(Document):
 					print('clearance_item',clearance_item.name,clearance_item.idx,' clearance_item.amount_with_tax' ,clearance_item.amount_with_tax)
 					print("party",clearance_item.supplier,"party",self.employee,"daccount",debit_account,"caccount", credit_account)
 					# Prepare user remark for account entries
-					account_user_remark = f"PC Clearance {self.name}, Row {clearance_item.idx}, {clearance_item.expense_type}"
 					if clearance_item.custom_notes:
-						account_user_remark += f" - {clearance_item.custom_notes}"
+						account_user_remark = f" {clearance_item.custom_notes} - PC Clearance {self.name}, Row {clearance_item.idx}, {clearance_item.expense_type} "
+					else:
+						account_user_remark = f"PC Clearance {self.name}, Row {clearance_item.idx}, {clearance_item.expense_type}"
 					accounts.append({
 						"account": debit_account,
 						"debit_in_account_currency": clearance_item.amount_with_tax,
@@ -626,9 +630,10 @@ class PCClearance(Document):
 				bill_no=clearance_item.bill_no
 				cost_center=clearance_item.cost_center
 				# Prepare user remark for account entries
-				account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {clearance_item.expense_type}"
 				if clearance_item.custom_notes:
-					account_user_remark += f" - {clearance_item.custom_notes}"
+					account_user_remark = f" {clearance_item.custom_notes} - PC Clearance {self.name}, Row {clearance_detail_row_idx}, {clearance_item.expense_type} "
+				else:
+					account_user_remark = f"PC Clearance {self.name}, Row {clearance_detail_row_idx}, {clearance_item.expense_type}"
 				
 				accounts.append({
 					"account": default_employee_loan_account,
